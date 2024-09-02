@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Search } from "@/components/component/search";
 export default function Home() {
   return (
