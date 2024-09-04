@@ -17,12 +17,21 @@ To read more about using these font, please visit the Next.js documentation:
 - App Directory: https://nextjs.org/docs/app/building-your-application/optimizing/fonts
 - Pages Directory: https://nextjs.org/docs/pages/building-your-application/optimizing/fonts
 **/
+"use client";
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import Link from 'next/link';
 
+import axios from "axios"
 export function Search() {
+   const  test = async() =>{
+    const res = await axios.get("http://localhost:3001")
+    console.log(res.data)
+  }
   return (
     <div className="flex justify-center items-center gap-4">
+      <Link href='/dogs'>圖鑑</Link>
+
       <div className="relative w-full max-w-sm">
         <Input type="text" placeholder="Search..." className="pr-10" />
         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -32,6 +41,9 @@ export function Search() {
       <Button variant="outline">
         <ImageIcon className="w-5 h-5 mr-2" />
         Insert Image
+      </Button>
+      <Button onClick={test}>
+        測試
       </Button>
     </div>
   )
