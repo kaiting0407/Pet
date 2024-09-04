@@ -1,1 +1,29 @@
 GET http://localhost:3001 HTTP/1.1
+
+###
+POST http://localhost:3001/adddog HTTP/1.1
+Content-Type: application/json
+
+{
+    "dogname": "西高地白㹴",
+    "Weight": "15-20磅",
+    "LifeExpectancy": "13-15歲",
+    "AffectionateWithFamily": 5,
+    "GoodWithYoungChildren": 5,
+    "GoodWithOtherDogs": 3,
+    "SheddingLevel": 3,
+    "CoatGroomingFrequency": 3,
+    "DroolingLevel": 1,
+    "CoatLength": "中",
+    "OpennessToStrangers": 4,
+    "PlayfulnessLevel": 5,
+    "Watchdog": 5,
+    "AdaptabilityLevel": 4,
+    "TrainabilityLevel": 3,
+    "BarkingLevel": 5,
+    "AboutTheBreed": "聰明、自信且總是充滿玩樂精神，迷人的西高地白梗...",
+    "Health": "西部高地白梗通常是健康的狗，負責任的飼養員會檢查...",
+    "Grooming": "為了讓西斯蒂犬保持最佳狀態，定期梳理毛髮是必須的...",
+    "Exercise": "西斯蒂犬喜歡嬉戲玩耍，也喜歡散步...",
+    "Training": "聰明、自信、適應力強、玩耍時充滿樂趣，可愛的西高地白貓..."
+}

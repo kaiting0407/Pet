@@ -20,6 +20,8 @@ To read more about using these font, please visit the Next.js documentation:
 "use client";
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import Link from 'next/link';
+
 import axios from "axios"
 export function Search() {
    const  test = async() =>{
@@ -28,6 +30,8 @@ export function Search() {
   }
   return (
     <div className="flex justify-center items-center gap-4">
+      <Link href='/dogs'>圖鑑</Link>
+
       <div className="relative w-full max-w-sm">
         <Input type="text" placeholder="Search..." className="pr-10" />
         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
