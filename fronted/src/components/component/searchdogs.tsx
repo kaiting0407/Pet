@@ -21,7 +21,7 @@ To read more about using these font, please visit the Next.js documentation:
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import axios from "axios"
-export function Search() {
+export function Searchdogs() {
    const  test = async() =>{
     const res = await axios.get("http://localhost:3001")
     console.log(res.data)
@@ -34,10 +34,6 @@ export function Search() {
           <SearchIcon className="w-5 h-5 text-muted-foreground" />
         </div>
       </div>
-      <Button variant="outline">
-        <ImageIcon className="w-5 h-5 mr-2" />
-        Insert Image
-      </Button>
       <Button onClick={test}>
         測試
       </Button>
