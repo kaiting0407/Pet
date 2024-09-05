@@ -17,6 +17,7 @@ app.get("/", (req, res) => {
 app.post("/adddog", async (req, res) => {
     const {
         dogname,
+        image,
         Weight,
         LifeExpectancy,
         AffectionateWithFamily,
@@ -42,8 +43,9 @@ app.post("/adddog", async (req, res) => {
     try {
         const newDog = await prisma.dog.create({
             data: {
-                dogid: uuidv4(),  // 生成唯一的狗ID
+                dogid: uuidv4(), 
                 dogname,
+                image,
                 Weight,
                 LifeExpectancy,
                 AffectionateWithFamily: parseInt(AffectionateWithFamily),
@@ -71,6 +73,44 @@ app.post("/adddog", async (req, res) => {
         res.status(500).json({ error: 'Failed to add dog', message: error });
     }
 });
+
+app.get("/getalldog", async (req, res) => {
+    try {
+        const allDogs = await prisma.dog.findMany({
+            select: {
+                dogid:true,
+                dogname: true,
+                image: true 
+            }
+        });
+        res.status(200).json(allDogs);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Failed to fetch dogs' });
+    }
+});
+
+app.get('/dog/:id', async (req, res) => {
+    const { id } = req.params;
+    
+    try {
+      // 從 Prisma 獲取狗的資料
+      const dog = await prisma.dog.findUnique({
+        where: {
+          dogid: id,
+        },
+      });
+  
+      if (!dog) {
+        return res.status(404).json({ error: 'Dog not found' });
+      }
+  
+      res.status(200).json(dog);
+    } catch (error) {
+      console.error("Error fetching dog data:", error);
+      res.status(500).json({ error: 'Failed to fetch dog data' });
+    }
+  });
 
 
 app.listen(PORT, () => {

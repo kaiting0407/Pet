@@ -5,25 +5,29 @@ POST http://localhost:3001/adddog HTTP/1.1
 Content-Type: application/json
 
 {
-    "dogname": "西高地白㹴",
-    "Weight": "15-20磅",
-    "LifeExpectancy": "13-15歲",
+    "dogname": "西施犬",
+    "image":"https://shoplineimg.com/547e8c5e039055f3d4000026/5487d039f577fe6681000005/800x.png?",
+    "Weight": "9-16 磅",
+    "LifeExpectancy": "10-18 歲",
     "AffectionateWithFamily": 5,
     "GoodWithYoungChildren": 5,
-    "GoodWithOtherDogs": 3,
-    "SheddingLevel": 3,
-    "CoatGroomingFrequency": 3,
+    "GoodWithOtherDogs": 5,
+    "SheddingLevel": 1,
+    "CoatGroomingFrequency": 4,
     "DroolingLevel": 1,
-    "CoatLength": "中",
-    "OpennessToStrangers": 4,
-    "PlayfulnessLevel": 5,
-    "Watchdog": 5,
-    "AdaptabilityLevel": 4,
-    "TrainabilityLevel": 3,
-    "BarkingLevel": 5,
-    "AboutTheBreed": "聰明、自信且總是充滿玩樂精神，迷人的西高地白梗...",
-    "Health": "西部高地白梗通常是健康的狗，負責任的飼養員會檢查...",
-    "Grooming": "為了讓西斯蒂犬保持最佳狀態，定期梳理毛髮是必須的...",
-    "Exercise": "西斯蒂犬喜歡嬉戲玩耍，也喜歡散步...",
-    "Training": "聰明、自信、適應力強、玩耍時充滿樂趣，可愛的西高地白貓..."
+    "CoatLength": "長",
+    "OpennessToStrangers": 3,
+    "PlayfulnessLevel": 3,
+    "Watchdog": 3,
+    "AdaptabilityLevel": 5,
+    "TrainabilityLevel": 4,
+    "BarkingLevel": 3,
+    "AboutTheBreed": "西施犬是一種體型小巧的狗，體重約 9 到 16 磅，身高 8 到 11 英寸。牠們的外觀結實，毛色多樣且值得精心打理。西施犬性格活潑，特別對孩子友善，適合住在公寓或沒有大後院的家庭。牠們喜歡坐在主人的腿上，享受與人的陪伴，而不是追逐或挖洞。西施犬以其修剪整齊的外表而著稱，並且在過去一千年裡，作為宮廷寵物受到人們的喜愛。",
+    "Health": "由於皮毛厚重，臉短，西施犬不能很好地耐熱，也不是游泳健將。大多數西施犬通常是健康的，負責任的飼養員會篩查它們的健康情況，例如髖關節發育不良、髕骨脫位（膝蓋骨滑脫）、眼睛異常，包括白內障、進行性視網膜萎縮、視網膜脫離以及角膜乾燥和炎症由於過度暴露在空氣中而引起的炎症由於眼瞼閉合不當。",
+    "Grooming": "長外套的西施犬需要每天刷牙。使用帶有柔性針的優質鋼絲刷，並將頭髮分層以確保觸及皮膚。大約每三到四個星期洗一次澡將有助於保持外套清潔和最佳狀態。記得每天梳理鬍鬚和髮髻，用濕布輕輕清潔眼角。為了保護西施犬的眼睛不受刺激，應將頭頂的頭髮剪短或打成髮髻。如果您不想花時間在狗的外套上，那麼由專業美容師將西施犬夾成“小狗修剪”時看起來很可愛。修剪指甲和清潔耳朵應該是西施犬美容程式的一部分。",
+    "Exercise": "西施犬被飼養為家犬。因此，他們需要最少的運動。與主人一起進行短途日常散步和室內玩耍時間將滿足這個小型短腿伴侶的活動需求。",
+    "Training": "訓練西施犬既有趣又令人沮喪。這個品種往往會吸引他的主人，讓他按照自己的方式行事，這可能會導致一隻胖乎乎的、不那麼完全破屋的寵物，很難梳理。因為西施犬是這樣的人犬，所以基於表揚和獎勵的訓練方法效果最好。嚴厲的糾正不應該用於這個品種。一次一點引入所需的新行為，堅定不移，在狗行為不端時永遠不要屈服。如果他咬你或跳到你身上，不要理他，直到他平靜下來，然後表揚他。建議參加早期社交和小狗訓練課程，這有助於確保西施犬成長為一個適應良好、彬彬有禮的伴侶。報名參加小狗課程時，請確保課程中使用的訓練方法基於正強化。"
 }
+
+###
+GET http://localhost:3001/getalldog HTTP/1.1
