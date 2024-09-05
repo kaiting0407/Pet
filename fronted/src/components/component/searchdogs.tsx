@@ -21,6 +21,8 @@ To read more about using these font, please visit the Next.js documentation:
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import axios from "axios"
+import Link from 'next/link';
+
 export function Searchdogs() {
    const  test = async() =>{
     const res = await axios.get("http://localhost:3001")
@@ -34,6 +36,7 @@ export function Searchdogs() {
           <SearchIcon className="w-5 h-5 text-muted-foreground" />
         </div>
       </div>
+      <Link href='/'>回首頁</Link>
       <Button onClick={test}>
         測試
       </Button>
