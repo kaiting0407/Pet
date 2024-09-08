@@ -1,6 +1,6 @@
 "use client";
 import { useState } from 'react';
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/input"; // 假設這是你使用的輸入組件
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import Link from 'next/link';
@@ -8,8 +8,16 @@ import Link from 'next/link';
 export function Searchdogs({ onSearch }) {
   const [searchTerm, setSearchTerm] = useState("");
 
+  // 處理按下 Enter 鍵
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch(); // 當按下 Enter 時觸發搜尋
+    }
+  };
+
+  // 定義搜尋功能
   const handleSearch = () => {
-    onSearch(searchTerm);
+    onSearch(searchTerm); // 傳入搜尋詞
   };
 
   return (
@@ -21,35 +29,10 @@ export function Searchdogs({ onSearch }) {
           className="pr-10" 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={handleKeyDown} // 監聽按鍵事件
         />
-        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-          <SearchIcon className="w-5 h-5 text-muted-foreground" />
-        </div>
       </div>
-      <Link href='/'>回首頁</Link>
-      <Button onClick={handleSearch}>
-        搜尋
-      </Button>
+      <Button onClick={handleSearch}>搜尋</Button>
     </div>
-  )
-}
-
-function SearchIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  )
+  );
 }
