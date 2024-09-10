@@ -23,6 +23,7 @@ export function Searchdogs({ onSearch }) {
   return (
     <div className="flex justify-center items-center gap-4">
       <div className="relative w-full max-w-sm">
+        
         <Input 
           type="text" 
           placeholder="Search..." 
@@ -30,9 +31,13 @@ export function Searchdogs({ onSearch }) {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={handleKeyDown} // 監聽按鍵事件
+          
         />
+        
       </div>
+      
       <Button onClick={handleSearch}>搜尋</Button>
     </div>
+    
   );
 }

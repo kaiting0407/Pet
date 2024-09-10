@@ -5,6 +5,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import { Searchdogs } from './Searchdogs'; // 引入搜尋組件
 
+
 export default function AllDog() {
   const [dogs, setDogs] = useState([]);
   const [filteredDogs, setFilteredDogs] = useState([]);
@@ -34,6 +35,7 @@ export default function AllDog() {
 
   return (
     <div>
+      <Link href={'/'}>回首頁</Link>
       <Searchdogs onSearch={handleSearch} />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
         {filteredDogs.map((dog) => (
