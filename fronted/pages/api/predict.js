@@ -1,54 +1,50 @@
-import formidable from 'formidable';
-import { exec } from 'child_process';
+import axios from 'axios';
+import multer from 'multer';
+import FormData from 'form-data';
+import { promisify } from 'util';
+import fs from 'fs';
 
-export const config = {
-  api: {
-    bodyParser: false, // 禁用默认的 body 解析
-  },
-};
+// 設置 multer 用於接收文件
+const upload = multer({ dest: '/tmp' });
+const uploadMiddleware = promisify(upload.single('image')); // 'image' 是前端發送的文件字段名稱
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    console.log('Received POST request'); // 打印日志
+    try {
+      // 處理文件上傳
+      await uploadMiddleware(req, res);
+      const file = req.file; // multer 將文件存入 req.file
+      console.log(file);
 
-    const form = formidable({
-      keepExtensions: true, // 保留文件扩展名
-    });
-
-    form.parse(req, (err, fields, files) => {
-      if (err) {
-        console.error('Error parsing form data:', err);
-        return res.status(500).json({ message: 'Error parsing form data' });
+      if (!file) {
+        return res.status(400).json({ error: '沒有上傳圖片' });
       }
 
-      // 确认解析到的文件信息
-      console.log('Parsed files:', files);
+      const formData = new FormData();
+      formData.append('file', fs.createReadStream(file.path)); // 使用文件路徑讀取圖片並附加到 FormData
 
-      // 检查文件是否存在，注意 files.image 是数组，取第一项
-      if (!files.image || !files.image[0] || !files.image[0].filepath) {
-        console.error('No file uploaded');
-        return res.status(400).json({ message: 'No file uploaded' });
-      }
-
-      // 获取上传的文件路径
-      const imagePath = files.image[0].filepath;
-      console.log('Uploaded file path:', imagePath);
-
-      // 调用 Python 脚本
-      const pythonPath = 'C:\\Users\\Asus\\anaconda3\\envs\\tf3\\python.exe'; // Python 路径
-      const scriptPath = 'C:\\Users\\Asus\\Desktop\\Project\\pet\\Pet\\breads\\pets_classifer-master\\test.py';
-
-      exec(`${pythonPath} ${scriptPath} ${imagePath}`, (error, stdout, stderr) => {
-        if (error) {
-          console.error('Error executing Python script:', stderr);
-          return res.status(500).json({ message: 'Error executing Python script', error: stderr });
-        }
-
-        console.log('Python script output:', stdout);
-        return res.status(200).json({ message: 'Success', output: stdout });
+      // 向 Flask API 發送請求
+      const response = await axios.post('http://127.0.0.1:5000/predict', formData, {
+        headers: {
+          ...formData.getHeaders(),
+        },
       });
-    });
+
+      // 刪除臨時文件
+      fs.unlinkSync(file.path);
+
+      return res.status(200).json({ output: response.data }); // 返回預測結果到前端
+    } catch (error) {
+      console.error('Error in API:', error);
+      return res.status(500).json({ error: '圖片上傳或預測失敗' });
+    }
   } else {
-    res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method Not Allowed' });
   }
 }
+
+export const config = {
+  api: {
+    bodyParser: false, // 禁用 Next.js 默認的 body 解析，讓 multer 處理
+  },
+};

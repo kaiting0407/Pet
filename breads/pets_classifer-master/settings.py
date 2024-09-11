@@ -10,7 +10,7 @@ IMAGE_CLASS_KEYWORD_MAP = {
     ##'Akita_Inu': '秋田犬',
     ##'Dalmatian': '大麥町犬',
 }
-IMAGES_ROOT = 'C:/Users/User/Desktop/breads/pets_classifer-master/images'
+IMAGES_ROOT = 'C:/Users/Asus/Desktop/Project/pet/Pet/breads/pets_classifer-master/images'
 SPIDER_DOWNLOAD_PAGES = 2  # 下载每个类别10页的图片
 
 # #########数据###########
@@ -113,7 +113,7 @@ IMAGE_STD = [0.299, 0.224, 0.225]
 
 LEARNING_RATE = 0.0001
 TRAIN_EPOCHS = 80
-MODEL_PATH = 'C:/Users/User/Desktop/breads/pets_classifer-master/model.h5'
+MODEL_PATH = 'C:/Users/Asus/Desktop/Project/pet/Pet/breads/pets_classifer-master/model.h5'
 
 # ########Web#########
 
