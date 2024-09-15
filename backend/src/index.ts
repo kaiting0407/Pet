@@ -94,7 +94,6 @@ app.get('/dog/:id', async (req, res) => {
     const { id } = req.params;
     
     try {
-      // 從 Prisma 獲取狗的資料
       const dog = await prisma.dog.findUnique({
         where: {
           dogid: id,
@@ -111,7 +110,19 @@ app.get('/dog/:id', async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch dog data' });
     }
   });
-
+app.post('/getDogInfo',async(req,res)=>{
+  const {dogname} = req.body
+  try {
+    const finddog = await prisma.dog.findMany({
+      where:{
+        dogname:dogname
+      },
+    })
+    res.status(200).json(finddog)
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
