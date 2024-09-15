@@ -41,6 +41,7 @@ const PredictionResult: React.FC<PredictionResultProps> = ({ result, error }) =>
         ) : result && result.first_prediction && result.second_prediction ? (
           <>
             {renderPrediction(result.first_prediction, "第一預測")}
+            
             {renderPrediction(result.second_prediction, "第二預測")}
           </>
         ) : (

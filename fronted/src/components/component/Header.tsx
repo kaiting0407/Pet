@@ -17,8 +17,7 @@ export default function Header() {
             <ul className="flex flex-wrap justify-center md:justify-end space-x-4">
               <li><Link href="/" className="hover:underline">首頁</Link></li>
               <li><Link href="/identify" className="hover:underline">品種鑑定</Link></li>
-              <li><Link href="/breeds" className="hover:underline">品種圖鑑</Link></li>
-              <li><Link href="/about" className="hover:underline">關於我們</Link></li>
+              <li><Link href="/dogs" className="hover:underline">品種圖鑑</Link></li>
               <li><Link href="/contact" className="hover:underline">聯絡我們</Link></li>
             </ul>
           </nav>
