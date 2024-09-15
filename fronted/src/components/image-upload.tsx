@@ -7,23 +7,23 @@ import Link from 'next/link'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { UploadIcon, ImageIcon } from 'lucide-react'
-import PredictionResult from "@/components/component/PredictionResult"
-// type PredictionResultProps = {
-//   result: any | null
-//   error: string | null
-// }
 
-// function PredictionResult({ result, error }: PredictionResultProps) {
-//   if (error) {
-//     return <div className="text-red-500">{error}</div>
-//   }
-//   if (result) {
-//     return <div className="text-green-500">{JSON.stringify(result)}</div>
-//   }
-//   return null
-// }
+type PredictionResultProps = {
+  result: any | null
+  error: string | null
+}
 
-export default function ImageUpload() {
+function PredictionResult({ result, error }: PredictionResultProps) {
+  if (error) {
+    return <div className="text-red-500">{error}</div>
+  }
+  if (result) {
+    return <div className="text-green-500">{JSON.stringify(result)}</div>
+  }
+  return null
+}
+
+export function ImageUploadComponent() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [result, setResult] = useState<any | null>(null)
@@ -92,7 +92,7 @@ export default function ImageUpload() {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle className="text-xl font-bold">圖片上傳與預測</CardTitle>
+        <CardTitle>圖片上傳與預測</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex justify-center">
