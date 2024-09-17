@@ -113,7 +113,7 @@ IMAGE_STD = [0.299, 0.224, 0.225]
 
 LEARNING_RATE = 0.0001
 TRAIN_EPOCHS = 80
-MODEL_PATH = r"C:\Users\Asus\Desktop\Project\pet\Pet\breads\pets_classifer-master\model.h5"
+MODEL_PATH = r"./model.h5"
 
 # ########Web#########
 
