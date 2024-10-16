@@ -124,6 +124,60 @@ app.post('/getDogInfo',async(req,res)=>{
   }
 })
 
+app.post('/dog', async (req, res) => {
+  const { location, breed, page = 1 } = req.body;  // 從請求中獲取地點、品種和頁數
+  const limit = 10; // 每頁顯示10隻狗
+  const skip = (page - 1) * limit; // 根據頁數計算要跳過的狗數量
+  
+  try {
+    // 使用 Prisma 進行查詢
+    const result = await prisma.animal.findMany({
+      where: {
+        shelter_address: {
+          startsWith: location,  // 使用 `startsWith` 來匹配地址的前三個字
+        },
+        animal_done: {
+          predicted_breed: breed   // 僅匹配選定的狗品種來自 animal_done 表
+        }
+      },
+      include: {
+        animal_done: true  // 包含 `animal_done` 表中的對應數據
+      },
+      skip: skip,  // 跳過前面的記錄，用於分頁
+      take: limit  // 只取前10條記錄
+    });
+
+    // 總記錄數量，用於分頁
+    const totalDogs = await prisma.animal.count({
+      where: {
+        shelter_address: {
+          startsWith: location,
+        },
+        animal_done: {
+          predicted_breed: breed
+        }
+      }
+    });
+
+    // 返回查詢結果
+    res.status(200).json({
+      success: true,
+      data: result,
+      totalDogs: totalDogs, // 返回總狗數
+      totalPages: Math.ceil(totalDogs / limit), // 總頁數
+      currentPage: page
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: '伺服器錯誤，無法查詢資料',
+    });
+  }
+});
+
+
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
   });

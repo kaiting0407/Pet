@@ -1,0 +1,83 @@
+﻿<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=2.5,minimum-scale=1.0,width=device-width,user-scalable=yes" />
+    <script src="../js/jquery-3.7.0.min.js"></script>
+    <title>寵物登記管理資訊網</title>
+    <style>
+        body {
+            background-color: #7ED0F8;
+        }
+
+            body > .content {
+                width: 100%;
+            }
+
+        .content > .pic {
+            text-align: center;
+        }
+
+        .title {
+            font-size: 1.2rem;
+        }
+
+        .Notice {
+            margin: 0 auto;
+            max-width: 1024px;
+            font-weight: 100;
+            background: #FFF;
+            border-radius: 10px;
+            padding: 2em 1.5em 1.5em 1.5em;
+        }
+
+        .hr {
+            border-top: 5px solid #ffe36a;
+            border-right: 0;
+            border-left: 0;
+            margin: 1em 0 1em 0;
+        }
+
+        @media all and (max-width: 768px) {
+            .pic > img {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<script>
+	$(function(){
+		var Count = 5;
+		$('#Count').text(Count+1);
+		var timer = window.setInterval(check, 1000);
+		function check(){
+			if (Count >= 0 )
+			{
+				$('#Count').text(Count);
+				Count--;
+			}
+			else{
+			    location.href = location.origin;
+				clearInterval(timer);
+			}
+		}
+		$('#WebLink').prop('href', location.origin);
+	});
+</script>
+<body>
+    <div class="content">
+        <div id="Notice" class="Notice">
+            <div class="N_content">
+                <div>
+                    <div class="title">找不到網頁</div>
+                    <div class="hr"></div>
+                </div>
+                <div class="inner">
+                    <p>系統將於 <label id="Count"></label> 秒後 自動轉回首頁</p>
+                    <p>若頁面未自動導向或不想等待，請點擊 <a href="#" id="WebLink"><font color="#00683C">回首頁</font></a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
