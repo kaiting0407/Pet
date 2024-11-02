@@ -1,93 +1,80 @@
-'use client'
+'use client';
 
-import { useState, useRef } from 'react'
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import Link from 'next/link'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { UploadIcon, ImageIcon } from 'lucide-react'
-import PredictionResult from "@/components/component/PredictionResult"
-// type PredictionResultProps = {
-//   result: any | null
-//   error: string | null
-// }
-
-// function PredictionResult({ result, error }: PredictionResultProps) {
-//   if (error) {
-//     return <div className="text-red-500">{error}</div>
-//   }
-//   if (result) {
-//     return <div className="text-green-500">{JSON.stringify(result)}</div>
-//   }
-//   return null
-// }
+import { useState, useRef } from 'react';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Link from 'next/link';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { UploadIcon, ImageIcon } from 'lucide-react';
+import PredictionResult from "@/components/component/PredictionResult";
 
 export default function ImageUpload() {
-  const [selectedImage, setSelectedImage] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
-  const [result, setResult] = useState<any | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [isUploading, setIsUploading] = useState(false)
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [result, setResult] = useState<any | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   
-  const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null
-    setSelectedImage(file)
+    const file = event.target.files ? event.target.files[0] : null;
+    setSelectedImage(file);
 
     if (file) {
-      const previewUrl = URL.createObjectURL(file)
-      setImagePreview(previewUrl)
+      const previewUrl = URL.createObjectURL(file);
+      setImagePreview(previewUrl);
     } else {
-      setImagePreview(null)
+      setImagePreview(null);
     }
-  }
+  };
 
   const handleUpload = async () => {
     if (!selectedImage) {
-      setError('請先選擇圖片')
-      return
+      setError('請先選擇圖片');
+      return;
     }
 
-    setIsUploading(true)
-    const formData = new FormData()
-    formData.append('image', selectedImage)
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('image', selectedImage);
 
     try {
       const response = await fetch('/api/predict', {
         method: 'POST',
         body: formData,
-      })
+      });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json()
-      console.log('Response data:', data)
+      const data = await response.json();
+      console.log('Response data:', data);
+      setResult(data);
 
       if (data.error) {
-        setError(data.error)
-        setResult(null)
+        setError(data.error);
+        setResult(null);
       } else {
-        setResult(data.output)
-        setError(null)
+        setResult(data); // 直接設置為 data，不再使用 data.output
+        setError(null);
       }
     } catch (error) {
-      console.error('Error uploading image:', error)
-      setError('圖片上傳或預測失敗')
-      setResult(null)
+      console.error('Error uploading image:', error);
+      setError('圖片上傳或預測失敗');
+      setResult(null);
     } finally {
-      setIsUploading(false)
+      setIsUploading(false);
     }
-  }
+  };
 
   const handleFileSelect = () => {
     if (fileInputRef.current) {
-      fileInputRef.current.click()
+      fileInputRef.current.click();
     }
-  }
+  };
 
   return (
     <Card className="w-full max-w-md mx-auto">
@@ -96,9 +83,6 @@ export default function ImageUpload() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex justify-center">
-          <Link href="/dogs" className="text-blue-500 hover:underline">
-            查看圖鑑
-          </Link>
         </div>
         <div className="flex flex-col items-center gap-4">
           <Label htmlFor="image-upload" className="cursor-pointer">
@@ -144,5 +128,5 @@ export default function ImageUpload() {
         <PredictionResult result={result} error={error} />
       </CardContent>
     </Card>
-  )
+  );
 }

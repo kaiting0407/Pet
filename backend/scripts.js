@@ -61,12 +61,18 @@ const saveAnimalData = async () => {
 
         // 如果有圖片，下載圖片
         if (animal.album_file) {
-          const savePath = path.join(saveFolder, `${animal.animal_id}.png`);
+          const fileExtension = path.extname(animal.album_file) || '.png';
+          const savePath = path.join(saveFolder, `${animal.animal_id}${fileExtension}`);
+          
           try {
             await downloadImage(animal.album_file, savePath);
             console.log(`圖片已下載: ${savePath}`);
           } catch (downloadError) {
             console.error(`圖片下載失敗: ${animal.album_file}`, downloadError);
+            // 當圖片下載失敗時，將 wrong.png 複製到指定路徑
+            const wrongImagePath = path.resolve('C:\\Users\\Asus\\Desktop\\Project\\pet\\Pet\\backend', 'wrong.png');
+            fs.copyFileSync(wrongImagePath, savePath);
+            console.log(`使用預設圖片: ${wrongImagePath} 取代下載失敗的圖片.`);
           }
         }
       }
@@ -81,3 +87,4 @@ const saveAnimalData = async () => {
 };
 
 saveAnimalData();
+

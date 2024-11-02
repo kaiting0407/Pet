@@ -1,0 +1,57 @@
+GET http://localhost:3001 HTTP/1.1
+
+###
+
+POST http://localhost:3001/adddog HTTP/1.1
+Content-Type: application/json
+
+{
+    "dogname": "西施犬",
+    "image":"https://shoplineimg.com/547e8c5e039055f3d4000026/5487d039f577fe6681000005/800x.png?",
+    "Weight": "9-16 磅",
+    "LifeExpectancy": "10-18 歲",
+    "AffectionateWithFamily": 5,
+    "GoodWithYoungChildren": 5,
+    "GoodWithOtherDogs": 5,
+    "SheddingLevel": 1,
+    "CoatGroomingFrequency": 4,
+    "DroolingLevel": 1,
+    "CoatLength": "長",
+    "OpennessToStrangers": 3,
+    "PlayfulnessLevel": 3,
+    "Watchdog": 3,
+    "AdaptabilityLevel": 5,
+    "TrainabilityLevel": 4,
+    "BarkingLevel": 3,
+    "AboutTheBreed": "西施犬是一種體型小巧的狗...",
+    "Health": "由於皮毛厚重，臉短，西施犬不能很好地耐熱...",
+    "Grooming": "長外套的西施犬需要每天刷牙...",
+    "Exercise": "西施犬被飼養為家犬...",
+    "Training": "訓練西施犬既有趣又令人沮喪..."
+}
+
+###
+
+GET http://localhost:3001/getalldog HTTP/1.1
+
+###
+
+POST http://localhost:3001/getDogInfo HTTP/1.1
+Content-Type: application/json
+
+{
+    "dogname":"西施犬"
+}
+###
+
+POST http://localhost:3001/dog HTTP/1.1
+Content-Type: application/json
+
+###
+
+POST http://localhost:3001/dog HTTP/1.1
+Content-Type: application/json
+
+{
+    "dogname":"西施犬"
+}

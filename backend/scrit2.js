@@ -1,17 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import { PrismaClient } from '@prisma/client'; // 使用 @prisma/client
+import { PrismaClient } from '@prisma/client';
 
-// 初始化 Prisma 客戶端
 const prisma = new PrismaClient();
 
-// 解析 .txt 文件並將結果寫入資料庫
 async function processResultsToDb(resultsFilePath) {
     try {
-        // 讀取結果文件
         const data = fs.readFileSync(resultsFilePath, 'utf-8');
-
-        // 按行分割文件內容
         const lines = data.split('\n');
 
         let currentAnimalId = null;
@@ -22,38 +17,56 @@ async function processResultsToDb(resultsFilePath) {
             const trimmedLine = line.trim();
 
             if (trimmedLine.startsWith('Image:')) {
-                // 從文件名中獲取 animal_id
-                currentAnimalId = trimmedLine.split(' ')[1].replace('.png', '');
+                const idString = trimmedLine.split(' ')[1].replace('.png', '');
+                currentAnimalId = idString ? parseInt(idString, 10) : null;
             } else if (trimmedLine.startsWith('Predicted Class:')) {
-                // 取得預測的狗品種
                 predictedBreed = trimmedLine.split(': ')[1];
             } else if (trimmedLine.startsWith('Confidence:')) {
-                // 取得信心度
                 confidence = parseFloat(trimmedLine.split(': ')[1]);
-            } else if (trimmedLine.includes('辨識失敗')) {
-                // 如果辨識失敗，將辨識失敗寫入 `predicted_breed`
-                predictedBreed = '辨識失敗';
-                confidence = null;
-            }
 
-            // 當有完整的資料時，使用 upsert 寫入或更新資料庫
-            if (currentAnimalId && predictedBreed !== null) {
-                await prisma.animal_done.upsert({
-                    where: { animal_id: parseInt(currentAnimalId, 10) },
-                    update: {
-                        predicted_breed: predictedBreed,
-                        prediction_confidence: confidence
-                    },
-                    create: {
-                        animal_id: parseInt(currentAnimalId, 10),
-                        predicted_breed: predictedBreed,
-                        prediction_confidence: confidence,
-                    }
+                if (confidence < 0.8) {
+                    predictedBreed = '混種狗';
+                }
+
+                // 確認 currentAnimalId 是否存在於 animal 表中
+                const animalExists = await prisma.animal.findUnique({
+                    where: { animal_id: currentAnimalId },
                 });
 
-                // 重置變數以處理下一張圖片
+                if (animalExists && currentAnimalId !== null && predictedBreed !== null) {
+                    console.log(`最終確認資料 - animal_id: ${currentAnimalId}, 品種: ${predictedBreed}, 信心度: ${confidence}`);
+
+                    await prisma.animal_done.upsert({
+                        where: { animal_id: currentAnimalId },
+                        update: {
+                            predicted_breed: predictedBreed,
+                            prediction_confidence: confidence
+                        },
+                        create: {
+                            animal_id: currentAnimalId,
+                            predicted_breed: predictedBreed,
+                            prediction_confidence: confidence,
+                        }
+                    });
+                } else {
+                    console.warn(`animal_id ${currentAnimalId} 不存在於 animal 表中，跳過寫入`);
+                }
+
+                // 清空暫存變數
                 currentAnimalId = null;
                 predictedBreed = null;
+                confidence = null;
+            } else if (trimmedLine.includes('辨識失敗')) {
+                if (currentAnimalId !== null) {
+                    const animalRecord = await prisma.animal.findUnique({
+                        where: { animal_id: currentAnimalId },
+                    });
+
+                    predictedBreed = animalRecord ? animalRecord.animal_kind : '未知';
+                } else {
+                    predictedBreed = '未知';
+                }
+
                 confidence = null;
             }
         }
@@ -68,12 +81,8 @@ async function processResultsToDb(resultsFilePath) {
 
 // 主函數
 async function main() {
-    // 指定結果文件的路徑
     const resultsFilePath = path.join(path.resolve(), 'results', 'all_results.txt');
-
-    // 處理結果並將其寫入資料庫
     await processResultsToDb(resultsFilePath);
 }
 
-// 執行主函數
 main();

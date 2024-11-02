@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import tensorflow as tf
 import numpy as np
 from PIL import Image
@@ -7,8 +6,12 @@ import models
 import settings
 import requests
 from io import BytesIO
+import logging
 
 app = Flask(__name__)
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # 加载模型
 model = models.my_densenet()
@@ -31,8 +34,7 @@ def preprocess_image(image):
 def predict_image(image):
     img = preprocess_image(image)
     predictions = model.predict(img)
-    top_two_indices = np.argsort(predictions[0])[-2:]
-    top_two_indices = top_two_indices[::-1]
+    top_two_indices = np.argsort(predictions[0])[-2:][::-1]
     top_two_confidences = predictions[0][top_two_indices]
     return top_two_indices, top_two_confidences
 
@@ -54,8 +56,10 @@ def predict():
                     "confidence": float(top_two_confidences[1])
                 }
             }
+            logger.info(f"Prediction result: {result}")
             return jsonify(result)
         except Exception as e:
+            logger.error(f"Image processing failed: {e}")
             return jsonify({"error": f"Image processing failed: {str(e)}"}), 500
 
     elif 'file' in request.files:
@@ -73,8 +77,10 @@ def predict():
                     "confidence": float(top_two_confidences[1])
                 }
             }
+            logger.info(f"Prediction result: {result}")
             return jsonify(result)
         except Exception as e:
+            logger.error(f"Image processing failed: {e}")
             return jsonify({"error": f"Image processing failed: {str(e)}"}), 500
 
     return jsonify({"error": "No file or URL provided"}), 400

@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:@localhost:3306/pet"
+}
+
+model dog {
+  dogid                  String @id
+  dogname                String @unique
+  AboutTheBreed          String
+  AdaptabilityLevel      Int
+  AffectionateWithFamily Int
+  BarkingLevel           Int
+  CoatGroomingFrequency  Int
+  CoatLength             String
+  DroolingLevel          Int
+  Exercise               String
+  GoodWithYoungChildren  Int
+  Grooming               String
+  Health                 String
+  LifeExpectancy         String
+  OpennessToStrangers    Int
+  PlayfulnessLevel       Int
+  SheddingLevel          Int
+  TrainabilityLevel      Int
+  Training               String
+  Watchdog               Int
+  Weight                 String
+  GoodWithOtherDogs      Int
+  image                  String
+}
+
+model animal {
+  id              Int          @id @default(autoincrement())
+  animal_id       Int          @unique(map: "Animal_animal_id_key")
+  animal_kind     String
+  animal_Variety  String
+  animal_sex      String
+  animal_colour   String
+  shelter_name    String
+  shelter_address String
+  album_file      String
+  createdAt       DateTime     @default(now())
+  animal_done     animal_done?
+}
+
+model animal_done {
+  id                    Int      @id @default(autoincrement())
+  animal_id             Int      @unique
+  predicted_breed       String?
+  prediction_confidence Float?
+  createdAt             DateTime @default(now())
+  animal                animal   @relation(fields: [animal_id], references: [animal_id])
+}

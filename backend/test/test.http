@@ -41,3 +41,12 @@ Content-Type: application/json
 {
     "dogname":"西施犬"
 }
+
+
+###
+POST http://localhost:3001/dog HTTP/1.1
+
+Content-Type: application/json
+{
+    "dogname":"西施犬"
+}

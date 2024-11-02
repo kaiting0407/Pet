@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-換行分隔每張圖片的結果
 import tensorflow as tf
 import numpy as np
 from PIL import Image, UnidentifiedImageError
@@ -30,42 +30,52 @@ def preprocess_image(image):
 def predict_image(image):
     img = preprocess_image(image)
     predictions = model.predict(img)
-    top_index = np.argmax(predictions[0])
-    top_confidence = predictions[0][top_index]
+
+    # 檢查 predictions 的形狀，確保 predictions[0] 是一維數組
+    if isinstance(predictions, np.ndarray) and predictions.ndim > 1:
+        predictions = predictions[0]  # 如果是多維數組，取第一個維度
+    
+    # 確認 predictions 是否包含足夠的分類數量
+    if len(predictions) < len(class_names):
+        raise ValueError("模型輸出的分類數量與預期不符。")
+
+    top_index = np.argmax(predictions)
+    top_confidence = float(predictions[top_index])  # 確保 top_confidence 是浮點數
+
     return top_index, top_confidence
+
+
 
 # 讀取圖片並進行辨識，將結果寫入單一的文字檔
 def process_images(image_folder, output_file):
-    # 確保輸出文件存在，使用 'a' 模式（追加寫入）
     with open(output_file, 'a', encoding='utf-8') as f:
         for image_path in Path(image_folder).glob('*.png'):
             try:
-                # 嘗試打開圖片
                 image = Image.open(image_path)
                 top_index, top_confidence = predict_image(image)
                 predicted_class = class_names[top_index]
                 
-                # 解析 animal_id 從文件名 (假設文件名是 animal_id.png)
                 animal_id = image_path.stem
 
-                # 將結果寫入同一個文字檔
                 f.write(f"Image: {image_path.name}\n")
                 f.write(f"Predicted Class: {predicted_class}\n")
                 f.write(f"Confidence: {top_confidence:.4f}\n")
-                f.write("\n")  # 換行分隔每張圖片的結果
+                f.write("\n")
 
                 print(f'圖片 {image_path.name} 已處理，結果已寫入 {output_file}')
             
             except UnidentifiedImageError:
                 f.write(f"Image: {image_path.name}\n")
                 f.write("無法識別的圖片格式，辨識失敗\n")
-                f.write("\n")  # 換行分隔每張圖片的結果
+                f.write("\n")
                 print(f"無法識別的圖片格式: {image_path.name}")
             except Exception as e:
                 f.write(f"Image: {image_path.name}\n")
                 f.write(f"辨識失敗: {e}\n")
-                f.write("\n")  # 換行分隔每張圖片的結果
+                f.write("\n")
                 print(f'圖片處理失敗 {image_path.name}: {e}')
+
+
 
 # 主函數
 def main():

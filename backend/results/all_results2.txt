@@ -1,0 +1,15 @@
+Image: 118621.png
+Predicted Class: 拉不拉多犬
+Confidence: 0.9637
+
+Image: 120371.png
+Predicted Class: 威瑪犬
+Confidence: 0.4250
+
+Image: 113600.png
+Predicted Class: 威瑪犬
+Confidence: 0.9157
+
+Image: 123664.png
+Predicted Class: 德國牧羊犬
+Confidence: 0.5967

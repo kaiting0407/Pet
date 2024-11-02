@@ -16,6 +16,7 @@ export default function AllDog() {
       const res = await axios.get("http://localhost:3001/getalldog");
       setDogs(res.data);
       setFilteredDogs(res.data); // 預設顯示所有狗
+      console.log(res.data)
     } catch (error) {
       console.error("Error fetching dogs:", error);
     }
